@@ -1,14 +1,15 @@
+import Game from "../Game";
 import Tile from "../tile/Tile";
 
 
-export default async function getMap() {
+export default async function getMap(game: Game) {
   return {
     name: "First Map",
     description: "First prototype map",
     tiles: [
-      new Tile(await loadTexture("/FirstMapTextures/Wall.png"), true),
-      new Tile(await loadTexture("/FirstMapTextures/Floor.png")),
-      new Tile(await loadTexture("/FirstMapTextures/Grass.png")),
+      new Tile(game.tileSize, await loadTexture("/FirstMapTextures/Wall.png"), true),
+      new Tile(game.tileSize, await loadTexture("/FirstMapTextures/Floor.png")),
+      new Tile(game.tileSize, await loadTexture("/FirstMapTextures/Grass.png")),
     ],
     layout: [
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],

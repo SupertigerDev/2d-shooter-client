@@ -23,7 +23,7 @@ export default class TileManager {
 
   }
   async loadMap() {
-    this.map = await getMap();
+    this.map = await getMap(this.game);
     this.draw();
   }
   gameLoop(delta: number){
@@ -51,7 +51,7 @@ export default class TileManager {
             worldY + this.game.tileSize > this.game.player.worldY - this.game.player.screenY &&
             worldY - this.game.tileSize < this.game.player.worldY + this.game.player.screenY) {
 
-          this.context.drawImage(this.map.tiles[texture].image!,screenX , screenY, this.game.tileSize, this.game.tileSize);
+          this.context.drawImage(this.map.tiles[texture].image!,screenX , screenY);
         }
       }
     }
