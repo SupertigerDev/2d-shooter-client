@@ -1,6 +1,7 @@
 import Game from "../Game";
 import getMap from "../maps/FirstMap";
 import { Map } from "../maps/Map";
+import Tile from "./Tile";
 export default class TileManager {
   game: Game;
   follow: any;
@@ -26,6 +27,12 @@ export default class TileManager {
     this.map = await getMap(this.game);
     this.draw();
   }
+  getTileAtCords(x: number, y: number): Tile | undefined {
+    const tiles = this.map?.tiles;
+    const texture = this.map?.layout[x][y] || -1;
+    if (texture === 0) return;
+    return tiles?.[texture - 1]
+  }
   gameLoop(delta: number){
     this.draw();
     this.update(delta);
@@ -50,8 +57,10 @@ export default class TileManager {
             worldX - this.game.tileSize < this.game.player.worldX + this.game.player.screenX &&
             worldY + this.game.tileSize > this.game.player.worldY - this.game.player.screenY &&
             worldY - this.game.tileSize < this.game.player.worldY + this.game.player.screenY) {
+          
+          if (texture == 0) continue;
 
-          this.context.drawImage(this.map.tiles[texture].image!,screenX , screenY);
+          this.context.drawImage(this.map.tiles[texture - 1].image!,screenX , screenY);
         }
       }
     }

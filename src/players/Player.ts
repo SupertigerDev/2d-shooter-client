@@ -95,23 +95,23 @@ export default class Player {
   }
 
   private handleCollisions() {
-    const map = this.game.tileManager?.map?.layout;
+    const tileManager = this.game.tileManager;
+    const map = tileManager?.map?.layout;
     const tileSize = this.game.tileSize;
-    const textures = this.game.tileManager.map?.tiles!;
     if (!map) return;
 
     // vertical
     if (this.vertical !== 0) {
       const gridY = Math.floor((this.worldY + this.dy) / tileSize);
       const gridX = Math.floor(this.worldX / tileSize);
-      if (textures[map[gridY][gridX]].collision) this.dy = 0;
+      if (tileManager.getTileAtCords(gridY, gridX)?.collision) this.dy = 0;
     }
 
     // horizontal
     if (this.horizontal !== 0) {
       const gridY = Math.floor(this.worldY / tileSize);
       const gridX = Math.floor((this.worldX + this.dx) / tileSize);
-      if (textures[map[gridY][gridX]].collision) this.dx = 0;
+      if (tileManager.getTileAtCords(gridY, gridX)?.collision) this.dx = 0;
     }
 
   }
