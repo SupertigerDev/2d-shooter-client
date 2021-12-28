@@ -5,4 +5,5 @@ export interface Map {
   description: string;
   tiles: Tile[];
   layout: number[][];
+  payloadRoute: Array<{x: number, y: number}>
 }

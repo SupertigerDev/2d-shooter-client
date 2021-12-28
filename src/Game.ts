@@ -53,9 +53,9 @@ export default class Game {
       d: false
     }
     
-    this.player = new SoldierPlayer(100, 100, this, true)
+    this.player = new SoldierPlayer(100, 400, this, true)
     this.player.spawnPlayer()
-    this.player2 = new SoldierPlayer(200, 200, this)
+    this.player2 = new SoldierPlayer(200, 400, this)
     this.player2.spawnPlayer()
     this.tileManager = new TileManager(this, this.player);
     
