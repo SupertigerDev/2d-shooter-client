@@ -2,6 +2,7 @@ import { Keyboard } from "./interfaces/Keyboard";
 import { Mouse } from "./interfaces/Mouse";
 import TileManager from "./tile/TileManager";
 import SoldierPlayer from "./players/SoldierPlayer";
+import { RouteVisualizer } from "./RouteVisualizer";
 
 
 export default class Game {
@@ -22,6 +23,7 @@ export default class Game {
   maxWorldRow: number;
   worldHeight: number;
   worldWidth: number;
+  routeVisualizer: RouteVisualizer;
   constructor() {
     this.canvas = document.getElementById('canvas') as HTMLCanvasElement;
     this.context = this.canvas.getContext('2d')!;
@@ -36,8 +38,8 @@ export default class Game {
     this.worldWidth = this.tileSize * this.maxWorldColumn;
     this.worldHeight = this.tileSize * this.maxWorldRow;
 
-    this.width = this.maxScreenColumn * this.tileSize;
-    this.height = this.maxScreenRow * this.tileSize;
+    this.width = window.innerWidth;
+    this.height = window.innerHeight;
     
 
     this.canvas.height = this.height;
@@ -60,6 +62,7 @@ export default class Game {
     this.tileManager = new TileManager(this, this.player);
     
     
+    this.routeVisualizer = new RouteVisualizer(this);
     
     
     this.lastTime = null;
@@ -81,6 +84,7 @@ export default class Game {
     
     
     this.tileManager.gameLoop(delta);
+    this.routeVisualizer.gameLoop(delta);
     this.player.gameLoop(delta);
     this.player2.gameLoop(delta);
 

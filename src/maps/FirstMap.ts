@@ -39,8 +39,9 @@ export default async function getMap(game: Game): Promise<Map> {
 
     ],
     payloadRoute: [
-      {x: 11, y: 20},
-      {x: 11, y: 90},
+      {y: 11, x: 17},
+      {y: 11, x: 40},
+      {y: 20, x: 40},
     ]
   }
 }
