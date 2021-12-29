@@ -4,6 +4,7 @@ import TileManager from "./tile/TileManager";
 import SoldierPlayer from "./players/SoldierPlayer";
 import { RouteVisualizer } from "./RouteVisualizer";
 import { HUD } from "./HUD";
+import { Payload } from "./Payload";
 
 
 export default class Game {
@@ -26,6 +27,7 @@ export default class Game {
   worldWidth: number;
   routeVisualizer: RouteVisualizer;
   hud: HUD;
+  payload: Payload;
   constructor() {
     this.canvas = document.getElementById('canvas') as HTMLCanvasElement;
     this.context = this.canvas.getContext('2d')!;
@@ -66,6 +68,9 @@ export default class Game {
     
     this.routeVisualizer = new RouteVisualizer(this);
 
+    this.payload = new Payload(this);
+
+
     this.hud = new HUD(this);
     
     
@@ -89,6 +94,8 @@ export default class Game {
     
     this.tileManager.gameLoop(delta);
     this.routeVisualizer.gameLoop(delta);
+    this.payload.gameLoop(delta);
+
     this.player.gameLoop(delta);
     this.player2.gameLoop(delta);
     

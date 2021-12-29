@@ -26,7 +26,7 @@ export class HUD {
     const playerY = Math.round(this.player.worldY);
     const angle = Math.round((this.player.angle * (180/Math.PI)))
     this.context.fillText("FPS: " + fps, 5,18);
-    this.context.fillText("x: " + playerX + " y: " + playerY , 5,18 * 2);
+    this.context.fillText("X: " + playerX + " Y: " + playerY , 5,18 * 2);
     this.context.fillText("Angle: " + angle, 5, 18 * 3);
   }
   drawPlayerDetails() {
@@ -35,19 +35,19 @@ export class HUD {
     const maxHealth = this.player.maxHealth;
     
     const healthBarWidth = 150;
-    const healthBarHeight = 40;
+    const healthBarHeight = 25;
     // draw health bar
     this.context.fillStyle = "gray";
-    this.context.fillRect(15, this.game.height - 40, healthBarWidth, 25)
+    this.context.fillRect(15, this.game.height - healthBarHeight - 15, healthBarWidth, healthBarHeight)
     
     this.context.fillStyle = "white";
     const healthRemainingWidth = health / maxHealth * healthBarWidth;
-    this.context.fillRect(15, this.game.height - healthBarHeight, healthRemainingWidth, 25)
+    this.context.fillRect(15, this.game.height - healthBarHeight - 15, healthRemainingWidth, 25)
     
     const displayHealth = `${health}/${maxHealth}`;
     const healthTextWidth = this.context.measureText(displayHealth).width;
-    this.context.fillText(displayHealth, 15 + healthBarWidth - healthTextWidth, this.game.height - healthBarHeight - 5)
-    this.context.fillText(name, 15, this.game.height - healthBarHeight - 5)
+    this.context.fillText(displayHealth, 15 + healthBarWidth - healthTextWidth, this.game.height - healthBarHeight - 20)
+    this.context.fillText(name, 15, this.game.height - healthBarHeight - 20)
 
   }
 }

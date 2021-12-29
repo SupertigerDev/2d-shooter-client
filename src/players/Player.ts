@@ -142,9 +142,40 @@ export default class Player {
     
         // Restore canvas state as saved from above
         this.context.restore();
+        this.drawPlayerInfo();
       }
+  }
+  drawPlayerInfo() {
+
+
+
+    
+    
+    const name = this.name;
+    const health = this.health;
+    const maxHealth = this.maxHealth;
+    
+    const healthBarWidth = 70;
+    const healthBarHeight = 10;
+
+
+    const healthBarScreenX = this.worldX - this.game.player.worldX + this.game.player.screenX - (healthBarWidth / 2);
+    const healthBarScreenY = this.worldY - this.game.player.worldY + this.game.player.screenY - 50;
+
+    // draw health bar
+    this.context.fillStyle = "gray";
+    this.context.fillRect(healthBarScreenX, healthBarScreenY, healthBarWidth, healthBarHeight)
+    
+    this.context.fillStyle = "white";
+    const healthRemainingWidth = health / maxHealth * healthBarWidth;
+    this.context.fillRect(healthBarScreenX, healthBarScreenY, healthRemainingWidth, healthBarHeight)
+    
+
+    const nameTextWidth = this.context.measureText(name).width;
+
+
+    this.context.fillText(name, healthBarScreenX + (healthBarWidth /2) - (nameTextWidth / 2), healthBarScreenY - 5)
 
   }
-
 
 }
