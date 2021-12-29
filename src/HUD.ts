@@ -19,15 +19,23 @@ export class HUD {
     this.drawPlayerDetails();
   }
   drawDebug(delta: number) {
-    this.context.font = '18px serif';
-    this.context.fillStyle = "black"
+    
     const fps = Math.round(1000/delta)
     const playerX = Math.round(this.player.worldX);
     const playerY = Math.round(this.player.worldY);
     const angle = Math.round((this.player.angle * (180/Math.PI)))
-    this.context.fillText("FPS: " + fps, 5,18);
-    this.context.fillText("X: " + playerX + " Y: " + playerY , 5,18 * 2);
-    this.context.fillText("Angle: " + angle, 5, 18 * 3);
+    
+    const fullText = `FPS: ${fps} ` + `X: ${playerX} Y: ${playerY} ` + `Angle: ${angle}`;
+    const textWidth = this.context.measureText(fullText).width;
+
+    this.context.fillStyle = "rgba(0,0,0,0.5)";
+    this.context.fillRect(0,0,textWidth + 10,25);
+
+    this.context.font = '18px serif';
+    this.context.fillStyle = "white"
+
+    this.context.fillText(fullText, 5,18);
+
   }
   drawPlayerDetails() {
     const name = this.player.name;
