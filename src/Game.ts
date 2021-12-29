@@ -3,6 +3,7 @@ import { Mouse } from "./interfaces/Mouse";
 import TileManager from "./tile/TileManager";
 import SoldierPlayer from "./players/SoldierPlayer";
 import { RouteVisualizer } from "./RouteVisualizer";
+import { HUD } from "./HUD";
 
 
 export default class Game {
@@ -24,6 +25,7 @@ export default class Game {
   worldHeight: number;
   worldWidth: number;
   routeVisualizer: RouteVisualizer;
+  hud: HUD;
   constructor() {
     this.canvas = document.getElementById('canvas') as HTMLCanvasElement;
     this.context = this.canvas.getContext('2d')!;
@@ -63,6 +65,8 @@ export default class Game {
     
     
     this.routeVisualizer = new RouteVisualizer(this);
+
+    this.hud = new HUD(this);
     
     
     this.lastTime = null;
@@ -87,6 +91,8 @@ export default class Game {
     this.routeVisualizer.gameLoop(delta);
     this.player.gameLoop(delta);
     this.player2.gameLoop(delta);
+    
+    this.hud.gameLoop(delta);
 
     
     

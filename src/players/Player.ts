@@ -26,6 +26,8 @@ export default class Player {
   dx: number;
   dy: number;
   self: boolean;
+  health: number;
+  maxHealth: number;
 
   constructor(worldX: number, worldY: number, game: Game, self = false) {
     this.game = game;
@@ -33,6 +35,9 @@ export default class Player {
     this.self = self;
     this.context = this.game.context;
     this.name = "Player";
+    this.maxHealth = 200;
+    this.health = 200;
+
     this.spawn = false;
     this.walkSpeed = 0.5;
 
