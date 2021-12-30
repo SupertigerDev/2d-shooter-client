@@ -5,6 +5,8 @@ import SoldierPlayer from "./players/SoldierPlayer";
 import { RouteVisualizer } from "./RouteVisualizer";
 import { HUD } from "./HUD";
 import { Payload } from "./Payload";
+import { SocketManager } from "./SocketManager";
+import Player from "./players/Player";
 
 
 export default class Game {
@@ -13,8 +15,7 @@ export default class Game {
   height: number;
   canvas: HTMLCanvasElement;
   context: CanvasRenderingContext2D;
-  player: SoldierPlayer;
-  player2: SoldierPlayer;
+  player: Player;
   mouse: Mouse
   keyboard: Keyboard
   tileManager: TileManager;
@@ -28,10 +29,17 @@ export default class Game {
   routeVisualizer: RouteVisualizer;
   hud: HUD;
   payload: Payload;
+  socketManager: SocketManager;
+  latestHeroProperties: any;
+  players: {[key: string]: Player};
   constructor() {
+
+    this.socketManager = new SocketManager(this);
+
     this.canvas = document.getElementById('canvas') as HTMLCanvasElement;
     this.context = this.canvas.getContext('2d')!;
     this.tileSize = 50
+    this.latestHeroProperties = null;
 
     this.maxScreenColumn = 15;
     this.maxScreenRow = 9;
@@ -59,18 +67,15 @@ export default class Game {
       d: false
     }
     
+    // temporarily instantiate the player.
     this.player = new SoldierPlayer(100, 400, this, true)
-    this.player.spawnPlayer()
-    this.player2 = new SoldierPlayer(200, 400, this)
-    this.player2.spawnPlayer()
-    this.tileManager = new TileManager(this, this.player);
-    
+    this.players = {};
+
+
+    this.tileManager = new TileManager(this);
     
     this.routeVisualizer = new RouteVisualizer(this);
-
     this.payload = new Payload(this);
-
-
     this.hud = new HUD(this);
     
     
@@ -88,8 +93,6 @@ export default class Game {
     this.context.fillStyle = "#31beff";
     this.context.fillRect(0,0, this.width, this.height)
 
-
-
     
     
     this.tileManager.gameLoop(delta);
@@ -97,7 +100,10 @@ export default class Game {
     this.payload.gameLoop(delta);
 
     this.player.gameLoop(delta);
-    this.player2.gameLoop(delta);
+
+    for (let playerId in this.players) {
+      this.players[playerId].gameLoop(delta);
+    }
     
     this.hud.gameLoop(delta);
 

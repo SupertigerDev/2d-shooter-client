@@ -1,14 +1,11 @@
 import Game from "./Game";
-import Player from "./players/Player";
 
 export class HUD {
   game: Game;
   context: CanvasRenderingContext2D;
-  player: Player
 
   constructor(game: Game) {
     this.game = game;
-    this.player = game.player;
     this.context = this.game.context;
   }
   gameLoop(delta: number) {
@@ -19,11 +16,11 @@ export class HUD {
     this.drawPlayerDetails();
   }
   drawDebug(delta: number) {
-    
+    const player = this.game.player;
     const fps = Math.round(1000/delta)
-    const playerX = Math.round(this.player.worldX);
-    const playerY = Math.round(this.player.worldY);
-    const angle = Math.round((this.player.angle * (180/Math.PI)))
+    const playerX = Math.round(player.worldX);
+    const playerY = Math.round(player.worldY);
+    const angle = Math.round((player.angle * (180/Math.PI)))
     
     const fullText = `FPS: ${fps} ` + `X: ${playerX} Y: ${playerY} ` + `Angle: ${angle}`;
     const textWidth = this.context.measureText(fullText).width;
@@ -38,9 +35,11 @@ export class HUD {
 
   }
   drawPlayerDetails() {
-    const name = this.player.name;
-    const health = this.player.health;
-    const maxHealth = this.player.maxHealth;
+    const player = this.game.player;
+
+    const name = player.name;
+    const health = player.health;
+    const maxHealth = player.maxHealth;
     
     const healthBarWidth = 150;
     const healthBarHeight = 25;

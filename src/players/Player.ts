@@ -59,6 +59,7 @@ export default class Player {
     this.horizontal = 0;
   }
   spawnPlayer() {
+    this.health = this.maxHealth;
     this.spawn = true;
   }
   gameLoop(deltaTime: number) {
@@ -69,12 +70,17 @@ export default class Player {
   private update(deltaTime: number) {
     if (!this.mouse) return;
     if (!this.self) return;
+    if (!this.spawn) return;
     this.angle = Math.atan2((this.mouse.y) - this.screenY, this.mouse.x - this.screenX);
     this.setDirection()
     this.walk(deltaTime)
     this.handleCollisions();
     this.worldX += this.dx;
     this.worldY += this.dy;
+
+    if (this.dx !== 0 || this.dy !== 0) {
+      this.game.socketManager.emitMove(this.worldX, this.worldY);
+    }
     
   }
   walk(deltaTime: number) {

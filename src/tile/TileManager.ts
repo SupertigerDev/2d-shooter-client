@@ -4,20 +4,16 @@ import { Map } from "../maps/Map";
 import Tile from "./Tile";
 export default class TileManager {
   game: Game;
-  follow: any;
-  lastFollowX: any;
-  lastFollowY: any;
+
   map: Map | null
   context: CanvasRenderingContext2D;
 
-  constructor(game: Game, follow: any) {
+  constructor(game: Game) {
     this.game = game;
     this.context = this.game.context;
     // must have x and y coordinates
-    this.follow = follow;
 
-    this.lastFollowX = this.follow.x;
-    this.lastFollowY = this.follow.y;
+
     this.map = null;
     this.loadMap();
 
