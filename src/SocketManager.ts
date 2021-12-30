@@ -38,16 +38,36 @@ export class SocketManager {
       }
       player.spawnPlayer();
     })
+
     this.socket.on("playerLeave", (playerId: string) => {
       delete this.game.players[playerId];
     })
+
     this.socket.on("playerMove", (data) => {
       const player = this.game.players[data[0]];
       player.worldX+= data[1];
       player.worldY+= data[2];
     })
+
+    this.socket.on("playerMoveAndRotate", (data) => {
+      const player = this.game.players[data[0]];
+      player.worldX+= data[1];
+      player.worldY+= data[2];
+      player.angle = data[3];
+    })
+    
+    this.socket.on("playerRotate", (data) => {
+      const player = this.game.players[data[0]];
+      player.angle = data[1];
+    })
   }
   emitMove(x: number, y: number) {
     this.socket.volatile.emit("playerMove", [x, y]);
+  }
+  emitMoveAndRotation(x: number, y: number, angle: number) {
+    this.socket.volatile.emit("playerMoveAndRotate", [x, y, angle]);
+  }
+  emitRotation(angle: number) {
+    this.socket.volatile.emit("playerRotate", angle);
   }
 }

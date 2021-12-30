@@ -71,7 +71,10 @@ export default class Player {
     if (!this.mouse) return;
     if (!this.self) return;
     if (!this.spawn) return;
+
+    const oldAngle = this.angle;
     this.angle = Math.atan2((this.mouse.y) - this.screenY, this.mouse.x - this.screenX);
+
     this.setDirection()
     this.walk(deltaTime)
     this.handleCollisions();
@@ -79,9 +82,20 @@ export default class Player {
     this.worldY += this.dy;
 
     if (this.dx !== 0 || this.dy !== 0) {
-      this.game.socketManager.emitMove(this.worldX, this.worldY);
+      if (oldAngle !== this.angle) {
+        this.game.socketManager.emitMoveAndRotation(this.worldX, this.worldY, this.angle);
+      } else {
+        this.game.socketManager.emitMove(this.worldX, this.worldY);
+      }
     }
     
+    if (this.dx === 0 && this.dy === 0) {
+      if (oldAngle !== this.angle) {
+        this.game.socketManager.emitRotation(this.angle)
+      }
+    }
+
+
   }
   walk(deltaTime: number) {
     this.dy = this.vertical * this.walkSpeed * deltaTime;
