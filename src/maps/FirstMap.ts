@@ -5,6 +5,7 @@ import { Map } from "./Map";
 
 export default async function getMap(game: Game): Promise<Map> {
   return {
+    id: "first_map",
     name: "First Map",
     description: "First prototype map",
     tiles: [

@@ -14,7 +14,9 @@ export class Payload {
   speed: number;
   currentRoute: number;
   angle: number;
+  test: boolean;
   constructor(game: Game) {
+    this.test = false;
     this.game = game;
     this.tileManager = game.tileManager;
     this.context = this.game.context;
@@ -48,6 +50,7 @@ export class Payload {
     this.pushPayload(delta)
   }
   pushPayload(delta: number) {
+    if (!this.test) return;
     const player = this.game.player;
 
     // move the payload if im near it.
@@ -96,6 +99,10 @@ export class Payload {
     this.context.fillStyle = "lightgray";
     if (this.pushing) {
       this.context.fillStyle = "red";
+    }
+    if (this.test) {
+      this.context.fillStyle = "pink";
+
     }
     // Store the current context state (i.e. rotation, translation etc..)
     this.context.save()

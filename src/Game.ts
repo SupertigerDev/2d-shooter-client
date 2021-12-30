@@ -32,6 +32,7 @@ export default class Game {
   socketManager: SocketManager;
   latestHeroProperties: any;
   players: {[key: string]: Player};
+  payload2: Payload;
   constructor() {
 
     this.socketManager = new SocketManager(this);
@@ -76,6 +77,8 @@ export default class Game {
     
     this.routeVisualizer = new RouteVisualizer(this);
     this.payload = new Payload(this);
+    this.payload2 = new Payload(this);
+    this.payload2.test = true;
     this.hud = new HUD(this);
     
     
@@ -98,6 +101,7 @@ export default class Game {
     this.tileManager.gameLoop(delta);
     this.routeVisualizer.gameLoop(delta);
     this.payload.gameLoop(delta);
+    this.payload2.gameLoop(delta);
 
     this.player.gameLoop(delta);
 

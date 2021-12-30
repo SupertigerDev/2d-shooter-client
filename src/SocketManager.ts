@@ -60,6 +60,15 @@ export class SocketManager {
       const player = this.game.players[data[0]];
       player.angle = data[1];
     })
+
+    this.socket.on("payloadMoveX", x => {
+      this.game.payload.x = x;
+      this.game.payload.angle = 0;
+    })
+    this.socket.on("payloadMoveY", y => {
+      this.game.payload.y = y;
+      this.game.payload.angle = 90;
+    })
   }
   emitMove(x: number, y: number) {
     this.socket.volatile.emit("playerMove", [x, y]);
