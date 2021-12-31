@@ -59,7 +59,7 @@ export default class Game {
     
     (window as any).context = this.context;
     
-    this.mouse = {x: 0, y: 0};
+    this.mouse = {x: 0, y: 0, lmb: false};
     this.keyboard = {
       w: false,
       a: false,

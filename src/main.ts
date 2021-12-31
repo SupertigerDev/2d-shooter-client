@@ -24,4 +24,11 @@ document.addEventListener("keyup", event => {
   }
 })
 
+document.addEventListener("mousedown", event => {
+  game.mouse.lmb = true;
+})
+document.addEventListener("mouseup", event => {
+  game.mouse.lmb = false;
+})
+
 

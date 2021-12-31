@@ -59,6 +59,15 @@ export default class Player {
     this.horizontal = 0;
   }
   spawnPlayer() {
+    // load latest hero changes.
+    if (this.game.latestHeroProperties) {
+      const changes = this.game.latestHeroProperties[this.name.toLowerCase()];
+      if (changes) {
+        for (let key in changes) {
+          (this as any)[key] = changes[key]
+        }
+      }
+    }
     this.health = this.maxHealth;
     this.spawn = true;
   }
