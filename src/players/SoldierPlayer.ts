@@ -30,11 +30,11 @@ export default class SoldierPlayer extends Player {
       lineX += x * 4;
       lineY += y * 4;
 
-      const textureIndex = this.game.tileManager.map?.layout[Math.floor(lineY/this.game.tileSize)]?.[Math.floor(lineX/this.game.tileSize)]
+      const tile = this.game.tileManager.getTileAtCords(Math.floor(lineX/this.game.tileSize), Math.floor(lineY/this.game.tileSize))
 
-      const texture = this.game.tileManager.map?.tiles[textureIndex! -1] 
 
-      if(texture?.collision) {
+
+      if(tile?.collision) {
         break
       } 
 

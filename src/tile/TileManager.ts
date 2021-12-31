@@ -25,7 +25,7 @@ export default class TileManager {
   }
   getTileAtCords(x: number, y: number): Tile | undefined {
     const tiles = this.map?.tiles;
-    const texture = this.map?.layout[x][y] || -1;
+    const texture = this.map?.layout[y][x] || -1;
     if (texture === 0) return;
     return tiles?.[texture - 1]
   }

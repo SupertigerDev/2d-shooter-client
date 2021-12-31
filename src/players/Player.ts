@@ -138,14 +138,14 @@ export default class Player {
     if (this.vertical !== 0) {
       const gridY = Math.floor((this.worldY + this.dy) / tileSize);
       const gridX = Math.floor(this.worldX / tileSize);
-      if (tileManager.getTileAtCords(gridY, gridX)?.collision) this.dy = 0;
+      if (tileManager.getTileAtCords(gridX, gridY)?.collision) this.dy = 0;
     }
 
     // horizontal
     if (this.horizontal !== 0) {
       const gridY = Math.floor(this.worldY / tileSize);
       const gridX = Math.floor((this.worldX + this.dx) / tileSize);
-      if (tileManager.getTileAtCords(gridY, gridX)?.collision) this.dx = 0;
+      if (tileManager.getTileAtCords(gridX, gridY)?.collision) this.dx = 0;
     }
 
   }
