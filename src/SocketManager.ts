@@ -18,14 +18,21 @@ export class SocketManager {
       id: string;
       x: number;
       y: number;
+      angle: number;
     }
 
     this.socket.on("playerList", (playerList: PlayerData[]) => {
       playerList.forEach(data => {
         const player = new SoldierPlayer(data.x, data.y, this.game, false);
+        player.angle = data.angle
         this.game.players[data.id] = player;
         player.spawnPlayer();
       })
+    })
+    this.socket.on("payloadPosition", ({x, y}) => {
+      this.game.payload.x = x;
+      this.game.payload.y = y;
+      this.game.payload.spawnPayload();
     })
 
     this.socket.on("spawnPlayer", (data: PlayerData) => {

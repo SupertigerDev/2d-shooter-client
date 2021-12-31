@@ -36,8 +36,6 @@ export class Payload {
   spawnPayload() {
     if (this.payloadSpawned) return;
     this.payloadSpawned = true;
-    this.x = this.tileManager.map?.payloadRoute[0].x!
-    this.y = this.tileManager.map?.payloadRoute[0].y!
   }
   gameLoop(delta: number) {
     this.update(delta);
@@ -45,8 +43,7 @@ export class Payload {
 
   }
   update(delta: number) {
-    if (!this.tileManager.map) return;
-    this.spawnPayload();     
+    if (!this.tileManager.map) return;   
     this.pushPayload(delta)
   }
   pushPayload(delta: number) {
@@ -87,6 +84,8 @@ export class Payload {
     }
   }
   draw() {
+    if (!this.payloadSpawned) return;
+
     if (!this.tileManager.map) return;
 
 
