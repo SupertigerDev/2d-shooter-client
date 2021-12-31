@@ -11,13 +11,14 @@ export default class SoldierPlayer extends Player {
     super.gameLoop(delta);
     if (!this.self) return;
     const leftMouseDown = this.game.mouse.lmb;
-    if (leftMouseDown) {
+    // if (leftMouseDown) {
       this.drawBeam()
-    }
+    // }
   }
 
   drawBeam() {
-
+    
+    const tileSize = this.game.tileSize;
     
     const x = Math.cos(this.angle)
     const y = Math.sin(this.angle)
@@ -27,22 +28,33 @@ export default class SoldierPlayer extends Player {
 
     for (let index = 0; index < 100; index++) {
 
-      lineX += x * 4;
-      lineY += y * 4;
+      lineX += x * 8;
+      lineY += y * 8;
 
-      const tile = this.game.tileManager.getTileAtCords(Math.floor(lineX/this.game.tileSize), Math.floor(lineY/this.game.tileSize))
+      const tile = this.game.tileManager.getTileAtCords(Math.floor(lineX / tileSize), Math.floor(lineY / tileSize))
+
+      if(tile?.collision) break
+
+      for (let playerId in this.game.players) {
+        const player = this.game.players[playerId];
+        const x = player.worldX - this.size / 2
+        const y = player.worldY - this.size / 2
+
+        // check if linex and y are colliding with x and y
+        if (x >= lineX - this.size && x <= lineX && 
+            y >= lineY - this.size && y <= lineY) {
+          return
+        }
 
 
+      }
 
-      if(tile?.collision) {
-        break
-      } 
 
       const screenX = lineX - this.worldX + this.game.player.screenX;
       const screenY = lineY - this.worldY + this.game.player.screenY;
 
       this.context.fillStyle = "red";
-      this.context.fillRect(screenX, screenY, 4, 4);
+      this.context.fillRect(screenX, screenY, 8, 8);
       
     }
 

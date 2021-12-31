@@ -166,7 +166,8 @@ export default class Player {
         //Rotate the canvas around the origin
         this.context.rotate(this.angle);
         
-        this.context.fillStyle = "green";
+        this.context.fillStyle = "rgba(0,0,0,0.6)";
+        // this.context.fillStyle = "green";
         this.context.fillRect(this.size / 2 * (-1), this.size / 2 * (-1), this.size, this.size);
     
         // Restore canvas state as saved from above
