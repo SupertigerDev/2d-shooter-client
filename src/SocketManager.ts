@@ -7,7 +7,7 @@ export class SocketManager {
 
   constructor(game: Game) {
     this.game = game;
-    this.socket = IO("localhost:80", {transports: ["websocket"]})
+    this.socket = IO("192.168.1.136:80", {transports: ["websocket"]})
 
     this.socket.on("overrideHeroProperties", heroProperties => {
       this.game.latestHeroProperties = heroProperties;
