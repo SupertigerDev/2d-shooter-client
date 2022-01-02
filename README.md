@@ -1,2 +1,2 @@
-# 2d-shooter
+# 2d-shooter-client
  
