@@ -3,17 +3,30 @@ import Player from "./Player";
 
 
 export default class SoldierPlayer extends Player {
+  lastGunFired: number;
+  gunFireRate: number;
   constructor(x: number, y: number, game: Game, self = false) {
     super(x, y, game, self);
     this.name = "Soldier"
+
+    this.gunFireRate = 100;
+    this.lastGunFired = -1;
+  }
+  emitFireGun() {
+    this.game.socketManager.socket.emit("playerShoot");
   }
   gameLoop(delta: number) {
     super.gameLoop(delta);
+    this.drawBeam();
     if (!this.self) return;
     const leftMouseDown = this.game.mouse.lmb;
-    // if (leftMouseDown) {
-      this.drawBeam()
-    // }
+    if (leftMouseDown) {
+      const canFire = performance.now() >= this.lastGunFired + this.gunFireRate
+      if (canFire) {
+        this.lastGunFired = performance.now()
+       this.emitFireGun();
+      }
+    }
   }
 
   
@@ -21,16 +34,16 @@ export default class SoldierPlayer extends Player {
     
     const tileSize = this.game.tileSize;
     
-    const x = Math.cos(this.angle)
-    const y = Math.sin(this.angle)
+    const xAngle = Math.cos(this.angle)
+    const yAngle = Math.sin(this.angle)
 
     let lineX = this.worldX
     let lineY = this.worldY
 
     for (let index = 0; index < 100; index++) {
 
-      lineX += x * 8;
-      lineY += y * 8;
+      lineX += xAngle * 8;
+      lineY += yAngle * 8;
 
       const tile = this.game.tileManager.getTileAtCords(Math.floor(lineX / tileSize), Math.floor(lineY / tileSize))
 

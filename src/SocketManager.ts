@@ -18,6 +18,7 @@ export class SocketManager {
       id: string;
       x: number;
       y: number;
+      health: number;
       angle: number;
     }
 
@@ -25,6 +26,7 @@ export class SocketManager {
       playerList.forEach(data => {
         const player = new SoldierPlayer(data.x, data.y, this.game, false);
         player.angle = data.angle
+        player.health = data.health
         this.game.players[data.id] = player;
         player.spawnPlayer();
       })
@@ -76,14 +78,25 @@ export class SocketManager {
       this.game.payload.y = y;
       this.game.payload.angle = 90;
     })
+
+    this.socket.on("playerDamaged", (data: {id: string, health: number}) => {
+      if (data.id === this.socket.id) {
+        // shots to myself
+        this.game.player.health = data.health;
+        return;
+      }
+      const player = this.game.players[data.id];
+      if (!player) return;
+      player.health = data.health;
+    })
   }
   emitMove(x: number, y: number) {
-    this.socket.volatile.emit("playerMove", [x, y]);
+    this.socket.emit("playerMove", [x, y]);
   }
   emitMoveAndRotation(x: number, y: number, angle: number) {
-    this.socket.volatile.emit("playerMoveAndRotate", [x, y, angle]);
+    this.socket.emit("playerMoveAndRotate", [x, y, angle]);
   }
   emitRotation(angle: number) {
-    this.socket.volatile.emit("playerRotate", angle);
+    this.socket.emit("playerRotate", angle);
   }
 }

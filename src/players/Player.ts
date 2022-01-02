@@ -68,7 +68,6 @@ export default class Player {
         }
       }
     }
-    this.health = this.maxHealth;
     this.spawn = true;
   }
   gameLoop(deltaTime: number) {
