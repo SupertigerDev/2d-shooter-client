@@ -1,6 +1,8 @@
 import Game from "./Game";
 import IO, { Socket } from "socket.io-client";
 import SoldierPlayer from "../players/SoldierPlayer";
+import { HeroNames } from "../constants/HERO_NAMES";
+import Player from "../players/Player";
 export class SocketManager {
   game: Game;
   socket: Socket;
@@ -28,7 +30,8 @@ export class SocketManager {
     })
     this.socket.on("playerList", (playerList: PlayerData[]) => {
       playerList.forEach(data => {
-        const player = new SoldierPlayer(data.username, data.id, data.x, data.y, this.game, false);
+        const HeroPlayer = Player.HeroPick(HeroNames.soldier);
+        const player = new HeroPlayer(data.username, data.id, data.x, data.y, this.game, false);
         player.angle = data.angle
         player.health = data.health
         player.team = data.team
@@ -44,7 +47,8 @@ export class SocketManager {
 
     this.socket.on("spawnPlayer", (data: PlayerData) => {
       const isMe = data.id === this.socket.id;
-      const player = new SoldierPlayer(data.username, data.id, data.x, data.y, this.game, isMe);
+      const HeroPlayer = Player.HeroPick(HeroNames.soldier);
+      const player = new HeroPlayer(data.username, data.id, data.x, data.y, this.game, isMe);
       player.team = data.team;
       if (isMe) {
         this.game.player = player;

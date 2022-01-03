@@ -31,10 +31,6 @@ export default class TileManager {
   }
   gameLoop(delta: number){
     this.draw();
-    this.update(delta);
-  }
-  update(delta: number){
-
   }
   draw() {
     if (!this.map) return;

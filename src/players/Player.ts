@@ -1,6 +1,8 @@
 import Game from "../common/Game";
+import { HeroNames } from "../constants/HERO_NAMES";
 import { Keyboard } from "../interfaces/Keyboard";
 import { Mouse } from "../interfaces/Mouse";
+import SoldierPlayer from "./SoldierPlayer";
 
 
 
@@ -64,6 +66,14 @@ export default class Player {
     // last moving direction
     this.vertical = 0;
     this.horizontal = 0;
+  }
+
+  static HeroPick(hero: HeroNames) {
+    switch (hero) {
+      case HeroNames.soldier: return SoldierPlayer
+      default:
+        throw Error("Invalid Hero")
+    }
   }
   spawnPlayer() {
     // load latest hero changes.
