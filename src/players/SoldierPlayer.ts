@@ -5,8 +5,8 @@ import Player from "./Player";
 export default class SoldierPlayer extends Player {
   lastGunFired: number;
   gunFireRate: number;
-  constructor(x: number, y: number, game: Game, self = false) {
-    super(x, y, game, self);
+  constructor(username: string, id: string,x: number, y: number, game: Game, self = false) {
+    super(username, id, x, y, game, self);
     this.name = "Soldier"
 
     this.gunFireRate = 100;

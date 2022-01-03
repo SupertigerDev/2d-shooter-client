@@ -28,8 +28,13 @@ export default class Player {
   self: boolean;
   health: number;
   maxHealth: number;
+  team: number;
+  id: string;
+  username: string;
 
-  constructor(worldX: number, worldY: number, game: Game, self = false) {
+  constructor(username: string, id: string, worldX: number, worldY: number, game: Game, self = false) {
+    this.id = id;
+    this.username = username;
     this.game = game;
     // check if im the character controller
     this.self = self;
@@ -40,6 +45,8 @@ export default class Player {
 
     this.spawn = false;
     this.walkSpeed = 0.5;
+
+    this.team = -1;
 
     this.worldX = worldX;
     this.worldY = worldY;
@@ -180,7 +187,7 @@ export default class Player {
 
     
     
-    const name = this.name;
+    const name = this.username;
     const health = this.health;
     const maxHealth = this.maxHealth;
     

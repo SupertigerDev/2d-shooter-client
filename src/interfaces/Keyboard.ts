@@ -3,4 +3,5 @@ export interface Keyboard {
   a: boolean
   s: boolean
   d: boolean
+  tab: boolean
 }

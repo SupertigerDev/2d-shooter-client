@@ -11,22 +11,27 @@ export class SocketManager {
 
     this.socket.on("overrideHeroProperties", heroProperties => {
       this.game.latestHeroProperties = heroProperties;
-
     })
 
     interface PlayerData {
       id: string;
+      username: string;
       x: number;
       y: number;
       health: number;
       angle: number;
+      team: number;
     }
 
+    this.socket.on("connect", () => {
+      this.socket.emit("setUsername", this.game.username)
+    })
     this.socket.on("playerList", (playerList: PlayerData[]) => {
       playerList.forEach(data => {
-        const player = new SoldierPlayer(data.x, data.y, this.game, false);
+        const player = new SoldierPlayer(data.username, data.id, data.x, data.y, this.game, false);
         player.angle = data.angle
         player.health = data.health
+        player.team = data.team
         this.game.players[data.id] = player;
         player.spawnPlayer();
       })
@@ -39,7 +44,8 @@ export class SocketManager {
 
     this.socket.on("spawnPlayer", (data: PlayerData) => {
       const isMe = data.id === this.socket.id;
-      const player = new SoldierPlayer(data.x, data.y, this.game, isMe);
+      const player = new SoldierPlayer(data.username, data.id, data.x, data.y, this.game, isMe);
+      player.team = data.team;
       if (isMe) {
         this.game.player = player;
       } else {

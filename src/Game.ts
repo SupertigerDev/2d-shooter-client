@@ -7,6 +7,7 @@ import { HUD } from "./HUD";
 import { Payload } from "./Payload";
 import { SocketManager } from "./SocketManager";
 import Player from "./players/Player";
+import { TabMenu } from "./TabMenu";
 
 
 export default class Game {
@@ -32,7 +33,10 @@ export default class Game {
   socketManager: SocketManager;
   latestHeroProperties: any;
   players: {[key: string]: Player};
-  constructor() {
+  tabMenu: TabMenu;
+  username: string;
+  constructor(username: string) {
+    this.username =   username;
 
     this.socketManager = new SocketManager(this);
 
@@ -64,11 +68,12 @@ export default class Game {
       w: false,
       a: false,
       s: false,
-      d: false
+      d: false,
+      tab: false
     }
     
     // temporarily instantiate the player.
-    this.player = new SoldierPlayer(100, 400, this, true)
+    this.player = new SoldierPlayer("placeholder", "1234", 100, 400, this, true)
     this.players = {};
 
 
@@ -76,6 +81,7 @@ export default class Game {
     
     this.routeVisualizer = new RouteVisualizer(this);
     this.payload = new Payload(this);
+    this.tabMenu = new TabMenu(this);
 
     this.hud = new HUD(this);
     
@@ -107,6 +113,7 @@ export default class Game {
     }
     
     this.hud.gameLoop(delta);
+    this.tabMenu.gameLoop(delta);
 
     
     
