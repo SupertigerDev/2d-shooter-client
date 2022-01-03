@@ -1,6 +1,6 @@
 import Game from "./Game";
 import IO, { Socket } from "socket.io-client";
-import SoldierPlayer from "./players/SoldierPlayer";
+import SoldierPlayer from "../players/SoldierPlayer";
 export class SocketManager {
   game: Game;
   socket: Socket;

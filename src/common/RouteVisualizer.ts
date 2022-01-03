@@ -1,5 +1,5 @@
 import Game from "./Game";
-import TileManager from "./tile/TileManager";
+import TileManager from "../tile/TileManager";
 
 export class RouteVisualizer {
   game: Game;

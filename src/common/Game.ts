@@ -1,12 +1,12 @@
-import { Keyboard } from "./interfaces/Keyboard";
-import { Mouse } from "./interfaces/Mouse";
-import TileManager from "./tile/TileManager";
-import SoldierPlayer from "./players/SoldierPlayer";
+import { Keyboard } from "../interfaces/Keyboard";
+import { Mouse } from "../interfaces/Mouse";
+import TileManager from "../tile/TileManager";
+import SoldierPlayer from "../players/SoldierPlayer";
 import { RouteVisualizer } from "./RouteVisualizer";
 import { HUD } from "./HUD";
 import { Payload } from "./Payload";
 import { SocketManager } from "./SocketManager";
-import Player from "./players/Player";
+import Player from "../players/Player";
 import { TabMenu } from "./TabMenu";
 
 

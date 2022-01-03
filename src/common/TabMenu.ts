@@ -1,5 +1,5 @@
 import Game from "./Game";
-import Player from "./players/Player";
+import Player from "../players/Player";
 
 // stats menu
 export class TabMenu {

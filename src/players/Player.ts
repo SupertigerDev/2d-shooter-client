@@ -1,4 +1,4 @@
-import Game from "../Game";
+import Game from "../common/Game";
 import { Keyboard } from "../interfaces/Keyboard";
 import { Mouse } from "../interfaces/Mouse";
 

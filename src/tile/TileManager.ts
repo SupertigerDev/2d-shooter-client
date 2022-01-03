@@ -1,4 +1,4 @@
-import Game from "../Game";
+import Game from "../common/Game";
 import getMap from "../maps/FirstMap";
 import { Map } from "../maps/Map";
 import Tile from "./Tile";
