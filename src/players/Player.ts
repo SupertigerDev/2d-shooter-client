@@ -181,6 +181,11 @@ export default class Player {
         this.drawPlayerInfo();
       }
   }
+  isEnemy() {
+    const myTeam = this.game.player.team;
+    const thisTeam = this.team;
+    return myTeam !== thisTeam;
+  }
   drawPlayerInfo() {
 
 
@@ -202,7 +207,7 @@ export default class Player {
     this.context.fillStyle = "gray";
     this.context.fillRect(healthBarScreenX, healthBarScreenY, healthBarWidth, healthBarHeight)
     
-    this.context.fillStyle = "white";
+    this.context.fillStyle = this.isEnemy() ? "red" : "white";
     const healthRemainingWidth = health / maxHealth * healthBarWidth;
     this.context.fillRect(healthBarScreenX, healthBarScreenY, healthRemainingWidth, healthBarHeight)
     

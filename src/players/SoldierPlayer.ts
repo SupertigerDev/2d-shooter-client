@@ -17,7 +17,7 @@ export default class SoldierPlayer extends Player {
   }
   gameLoop(delta: number) {
     super.gameLoop(delta);
-    this.drawBeam();
+    // this.drawBeam();
     if (!this.self) return;
     const leftMouseDown = this.game.mouse.lmb;
     if (leftMouseDown) {

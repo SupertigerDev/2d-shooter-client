@@ -37,7 +37,7 @@ export class HUD {
   drawPlayerDetails() {
     const player = this.game.player;
 
-    const name = player.name;
+    const name = player.username;
     const health = player.health;
     const maxHealth = player.maxHealth;
     
