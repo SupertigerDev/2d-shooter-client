@@ -36,8 +36,7 @@ export default class Game {
   players: {[key: string]: Player};
   tabMenu: TabMenu;
   username: string;
-  killCam: any;
-  showKillCam: boolean;
+  killCam: KillCam;
   constructor(username: string) {
     this.username =   username;
 
@@ -80,7 +79,6 @@ export default class Game {
     this.players = {};
 
 
-    this.showKillCam = false;
     this.killCam = new KillCam(this);
 
     
@@ -112,10 +110,10 @@ export default class Game {
     this.routeVisualizer.gameLoop(delta);
     
 
-    if (this.showKillCam) {
+    if (this.killCam.actions) {
       this.killCam.gameLoop(delta);
     }
-    if (!this.showKillCam) {
+    if (!this.killCam.actions) {
       this.payload.gameLoop(delta);
       this.player.gameLoop(delta);
       for (let playerId in this.players) {

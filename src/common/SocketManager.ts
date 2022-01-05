@@ -18,6 +18,7 @@ export class SocketManager {
     interface PlayerData {
       id: string;
       username: string;
+      heroId: HeroNames,
       x: number;
       y: number;
       health: number;
@@ -60,6 +61,9 @@ export class SocketManager {
       player.spawnPlayer();
     })
 
+    this.socket.on("showKillCam", ({killedBy, recentActions}) => {
+      this.game.killCam.loadActions(recentActions, killedBy);
+    })
     this.socket.on("playerLeave", (playerId: string) => {
       delete this.game.players[playerId];
     })
