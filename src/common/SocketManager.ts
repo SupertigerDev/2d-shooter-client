@@ -52,6 +52,7 @@ export class SocketManager {
       const player = new HeroPlayer(data.username, data.id, data.x, data.y, this.game, isMe);
       player.team = data.team;
       if (isMe) {
+        this.game.tileManager.cameraFollow(player)
         this.game.player = player;
       } else {
         this.game.players[data.id] = player;

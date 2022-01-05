@@ -16,7 +16,7 @@ export class HUD {
     this.drawPlayerDetails();
   }
   drawDebug(delta: number) {
-    const player = this.game.player;
+    const player = this.game.tileManager.follow;
     const fps = Math.round(1000/delta)
     const playerX = Math.round(player.worldX);
     const playerY = Math.round(player.worldY);
@@ -35,7 +35,7 @@ export class HUD {
 
   }
   drawPlayerDetails() {
-    const player = this.game.player;
+    const player = this.game.tileManager.follow;
 
     const name = player.username;
     const health = player.health;

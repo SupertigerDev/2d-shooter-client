@@ -166,14 +166,16 @@ export default class Player {
 
   }
   private draw() {
+    const followingPlayer = this.game.tileManager.follow;
+    const {screenX, screenY} = this.game.tileManager.worldToScreen(
+      this.worldX,
+      this.worldY
+    )
     
-    const screenX = this.worldX - this.game.player.worldX + this.game.player.screenX;
-    const screenY = this.worldY - this.game.player.worldY + this.game.player.screenY;
-    
-    if (this.worldX + this.game.tileSize > this.game.player.worldX - this.game.player.screenX &&
-      this.worldX - this.game.tileSize < this.game.player.worldX + this.game.player.screenX &&
-      this.worldY + this.game.tileSize > this.game.player.worldY - this.game.player.screenY &&
-      this.worldY - this.game.tileSize < this.game.player.worldY + this.game.player.screenY) {
+    if (this.worldX + this.game.tileSize > followingPlayer.worldX - followingPlayer.screenX &&
+      this.worldX - this.game.tileSize < followingPlayer.worldX + followingPlayer.screenX &&
+      this.worldY + this.game.tileSize > followingPlayer.worldY - followingPlayer.screenY &&
+      this.worldY - this.game.tileSize < followingPlayer.worldY + followingPlayer.screenY) {
         // Store the current context state (i.e. rotation, translation etc..)
         this.context.save()
     
@@ -209,23 +211,27 @@ export default class Player {
     const healthBarWidth = 70;
     const healthBarHeight = 10;
 
+    let healthBarScreenPos = this.game.tileManager.worldToScreen(
+      this.worldX,
+      this.worldY
+    )
 
-    const healthBarScreenX = this.worldX - this.game.player.worldX + this.game.player.screenX - (healthBarWidth / 2);
-    const healthBarScreenY = this.worldY - this.game.player.worldY + this.game.player.screenY - 50;
+    healthBarScreenPos.screenX -= (healthBarWidth / 2);
+    healthBarScreenPos.screenY -= 50;
 
     // draw health bar
     this.context.fillStyle = "gray";
-    this.context.fillRect(healthBarScreenX, healthBarScreenY, healthBarWidth, healthBarHeight)
+    this.context.fillRect(healthBarScreenPos.screenX, healthBarScreenPos.screenY, healthBarWidth, healthBarHeight)
     
     this.context.fillStyle = this.isEnemy() ? "red" : "white";
     const healthRemainingWidth = health / maxHealth * healthBarWidth;
-    this.context.fillRect(healthBarScreenX, healthBarScreenY, healthRemainingWidth, healthBarHeight)
+    this.context.fillRect(healthBarScreenPos.screenX, healthBarScreenPos.screenY, healthRemainingWidth, healthBarHeight)
     
 
     const nameTextWidth = this.context.measureText(name).width;
 
 
-    this.context.fillText(name, healthBarScreenX + (healthBarWidth /2) - (nameTextWidth / 2), healthBarScreenY - 5)
+    this.context.fillText(name, healthBarScreenPos.screenX + (healthBarWidth /2) - (nameTextWidth / 2), healthBarScreenPos.screenY - 5)
 
   }
 

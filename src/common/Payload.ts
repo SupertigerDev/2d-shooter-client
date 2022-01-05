@@ -92,8 +92,11 @@ export class Payload {
     const worldX = this.x * this.game.tileSize
     const worldY = this.y * this.game.tileSize
 
-    const screenX = (worldX - (this.game.tileSize /2)  ) - this.game.player.worldX + this.game.player.screenX;
-    const screenY = (worldY - (this.game.tileSize /2) ) - this.game.player.worldY + this.game.player.screenY;
+    const {screenX, screenY} = this.tileManager.worldToScreen(
+      (worldX - (this.game.tileSize /2) ),
+      (worldY - (this.game.tileSize /2) )
+    )
+
 
     this.context.fillStyle = "lightgray";
     if (this.pushing) {

@@ -28,16 +28,21 @@ export class RouteVisualizer {
       const secondPos = payloadRoute[index + 1];
       if (!secondPos) continue;
 
-      const firstPosX = (firstPos.x * tileSize) - (tileSize / 2) - this.game.player.worldX + this.game.player.screenX
-      const firstPosY = (firstPos.y * tileSize) - (tileSize / 2)  - this.game.player.worldY + this.game.player.screenY;
+      const firstScreenPos = this.tileManager.worldToScreen(
+        (firstPos.x * tileSize) - (tileSize / 2),
+        (firstPos.y * tileSize) - (tileSize / 2)
+      )
+      const secondScreenPos = this.tileManager.worldToScreen(
+        (secondPos.x * tileSize) - (tileSize / 2),
+        (secondPos.y * tileSize) - (tileSize / 2)
+      )
 
-      const secondPosX = (secondPos.x * tileSize) - (tileSize / 2) - this.game.player.worldX + this.game.player.screenX
-      const secondPosY = (secondPos.y * tileSize) - (tileSize / 2) - this.game.player.worldY + this.game.player.screenY;
+
 
 
       this.context.beginPath();
-      this.context.moveTo(firstPosX, firstPosY);
-      this.context.lineTo(secondPosX, secondPosY );
+      this.context.moveTo(firstScreenPos.screenX, firstScreenPos.screenY);
+      this.context.lineTo(secondScreenPos.screenX, secondScreenPos.screenY );
       this.context.stroke();
       
     }

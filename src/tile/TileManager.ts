@@ -1,17 +1,20 @@
 import Game from "../common/Game";
 import getMap from "../maps/FirstMap";
 import { Map } from "../maps/Map";
+import Player from "../players/Player";
 import Tile from "./Tile";
 export default class TileManager {
   game: Game;
 
   map: Map | null
   context: CanvasRenderingContext2D;
+  follow: Player;
 
   constructor(game: Game) {
     this.game = game;
     this.context = this.game.context;
-    // must have x and y coordinates
+
+    this.follow = this.game.player;
 
 
     this.map = null;
@@ -32,9 +35,16 @@ export default class TileManager {
   gameLoop(delta: number){
     this.draw();
   }
+  cameraFollow(player: Player) {
+    this.follow = player;
+  }
+  worldToScreen(worldX: number, worldY: number) {
+    const screenX = worldX - this.follow.worldX + this.follow.screenX;
+    const screenY = worldY - this.follow.worldY + this.follow.screenY;
+    return {screenX, screenY}
+  }
   draw() {
     if (!this.map) return;
-
     const columns = this.map.layout;
     for (let worldColumn = 0; worldColumn < columns.length; worldColumn++) {
       const rows = columns[worldColumn];
@@ -42,13 +52,13 @@ export default class TileManager {
         const texture = rows[worldRow];
         const worldX = worldRow * this.game.tileSize;
         const worldY = worldColumn* this.game.tileSize;
-        const screenX = worldX - this.game.player.worldX + this.game.player.screenX;
-        const screenY = worldY - this.game.player.worldY + this.game.player.screenY;
+        const screenX = worldX - this.follow.worldX + this.follow.screenX;
+        const screenY = worldY - this.follow.worldY + this.follow.screenY;
 
-        if (worldX + this.game.tileSize > this.game.player.worldX - this.game.player.screenX &&
-            worldX - this.game.tileSize < this.game.player.worldX + this.game.player.screenX &&
-            worldY + this.game.tileSize > this.game.player.worldY - this.game.player.screenY &&
-            worldY - this.game.tileSize < this.game.player.worldY + this.game.player.screenY) {
+        if (worldX + this.game.tileSize > this.follow.worldX - this.follow.screenX &&
+            worldX - this.game.tileSize < this.follow.worldX + this.follow.screenX &&
+            worldY + this.game.tileSize > this.follow.worldY - this.follow.screenY &&
+            worldY - this.game.tileSize < this.follow.worldY + this.follow.screenY) {
           
           if (texture == 0) continue;
 
