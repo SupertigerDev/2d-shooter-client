@@ -8,6 +8,7 @@ import { Payload } from "./Payload";
 import { SocketManager } from "./SocketManager";
 import Player from "../players/Player";
 import { TabMenu } from "./TabMenu";
+import { KillCam } from "./KillCam";
 
 
 export default class Game {
@@ -35,6 +36,8 @@ export default class Game {
   players: {[key: string]: Player};
   tabMenu: TabMenu;
   username: string;
+  killCam: any;
+  showKillCam: boolean;
   constructor(username: string) {
     this.username =   username;
 
@@ -77,8 +80,11 @@ export default class Game {
     this.players = {};
 
 
-    this.tileManager = new TileManager(this);
+    this.showKillCam = false;
+    this.killCam = new KillCam(this);
+
     
+    this.tileManager = new TileManager(this);
     this.routeVisualizer = new RouteVisualizer(this);
     this.payload = new Payload(this);
     this.tabMenu = new TabMenu(this);
@@ -104,12 +110,17 @@ export default class Game {
     
     this.tileManager.gameLoop(delta);
     this.routeVisualizer.gameLoop(delta);
-    this.payload.gameLoop(delta);
+    
 
-    this.player.gameLoop(delta);
-
-    for (let playerId in this.players) {
-      this.players[playerId].gameLoop(delta);
+    if (this.showKillCam) {
+      this.killCam.gameLoop(delta);
+    }
+    if (!this.showKillCam) {
+      this.payload.gameLoop(delta);
+      this.player.gameLoop(delta);
+      for (let playerId in this.players) {
+        this.players[playerId].gameLoop(delta);
+      }
     }
     
     this.hud.gameLoop(delta);
