@@ -26,6 +26,7 @@ export class SocketManager {
     }
 
     this.socket.on("connect", () => {
+      this.game.players = {};
       this.socket.emit("setUsername", this.game.username)
     })
     this.socket.on("playerList", (playerList: PlayerData[]) => {
