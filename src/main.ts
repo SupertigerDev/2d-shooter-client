@@ -16,6 +16,10 @@ function main() {
 
   const game = new Game(localStorage["username"]);
 
+  window.addEventListener("resize", () => {
+    game.onResize();
+  }, true)
+
   // events
   document.addEventListener("mousemove", event => {
     game.mouse.x = event.clientX;

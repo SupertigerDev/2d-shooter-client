@@ -44,6 +44,7 @@ export class KillCam {
   lastTick:  number;
   currentAction: number;
   followId: null | string;
+  actionEnded: boolean;
   constructor(game: Game) {
     this.game = game;
     this.actions = null;
@@ -51,18 +52,25 @@ export class KillCam {
     this.tick = 15;
     this.lastTick = -1;
     this.currentAction = 0;
+    this.actionEnded = false;
 
     this.followId = null;
     this.players = {};
+
   }
   loadActions(data: {startPositions: {players: PlayerData[]}, actions: Array<[ReplayActionType, ...any][]>}, followId: string) {
-    this.actions = data.actions;
-    const players = data.startPositions.players
-    this.followId = followId;
-    for (let playerId in players) {
-      const jsonPlayer = players[playerId];
-      this.spawnPlayer(jsonPlayer)
-    }
+    this.game.transitionManager.hideScreen();
+
+    setTimeout(() => {
+      this.actions = data.actions;
+      const players = data.startPositions.players
+      this.followId = followId;
+      for (let playerId in players) {
+        const jsonPlayer = players[playerId];
+        this.spawnPlayer(jsonPlayer)
+      }
+      this.game.transitionManager.showScreen();
+    }, 500);
     
   }
   spawnPlayer(jsonPlayer: PlayerData) {
@@ -80,9 +88,52 @@ export class KillCam {
 
     this.players[player.id] = player;
   }
-  gameLoop(delta: number) {
-    if (this.actions === null) return;
+  reset() {
+    this.game.transitionManager.hideScreen();
+    setTimeout(() => {
+      this.actions = null;
+      this.currentAction = 0;
+      this.players = {};
+      this.lastTick = -1;
+      this.followId = null;
+      this.actionEnded = false;
+      this.game.tileManager.cameraFollow(this.game.player);
 
+      this.game.transitionManager.showScreen();
+    }, 500);
+  }
+  gameLoop(delta: number) {
+    this.drawUI();
+    this.update(delta);
+    
+  }
+  drawUI() {
+    if (this.actions === null) return;
+    if (!this.followId) return;
+    if (!this.players[this.followId]) return;
+    const bgWidth = this.game.width;
+    const bgHeight = 100;
+    this.game.context.fillStyle = "rgba(0,0,0,0.6)";
+    this.game.context.fillRect(0,0, bgWidth, bgHeight)
+
+    this.game.context.font = "25px Arial";
+    
+    const mainText = "You Were Killed By:";
+    const mainTextWidth = this.game.context.measureText(mainText).width
+    
+    const username = this.players[this.followId].username;
+    const usernameWidth = this.game.context.measureText(username).width
+    
+    
+    this.game.context.fillStyle = "white";
+    this.game.context.fillText(mainText, (bgWidth/2) - (mainTextWidth/2), 40);
+    this.game.context.fillStyle = "rgba(255,255,255,0.8)";
+    this.game.context.fillText(username, (bgWidth/2) - (usernameWidth/2), 80);
+
+
+  }
+  update(delta: number) {
+    if (this.actions === null) return;
     for (let playerId in this.players) {
       this.players[playerId].gameLoop(delta);
     }
@@ -92,6 +143,10 @@ export class KillCam {
     this.lastTick = performance.now()
 
     if (this.actions.length === this.currentAction) {
+      if (!this.actionEnded) {
+        this.actionEnded = true;
+        this.reset();
+      }
       return;
     }
 
@@ -127,9 +182,8 @@ export class KillCam {
       }
     }
 
-    this.currentAction++;   
-
-
+    this.currentAction++;  
   }
+
 
 }

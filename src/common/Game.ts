@@ -9,6 +9,7 @@ import { SocketManager } from "./SocketManager";
 import Player from "../players/Player";
 import { TabMenu } from "./TabMenu";
 import { KillCam } from "./KillCam";
+import { TransitionManager } from "./TransitionManager";
 
 
 export default class Game {
@@ -37,6 +38,7 @@ export default class Game {
   tabMenu: TabMenu;
   username: string;
   killCam: KillCam;
+  transitionManager: TransitionManager;
   constructor(username: string) {
     this.username =   username;
 
@@ -85,6 +87,9 @@ export default class Game {
     this.tileManager = new TileManager(this);
     this.routeVisualizer = new RouteVisualizer(this);
     this.payload = new Payload(this);
+
+    this.transitionManager = new TransitionManager(this)
+
     this.tabMenu = new TabMenu(this);
 
     this.hud = new HUD(this);
@@ -93,6 +98,14 @@ export default class Game {
     this.lastTime = null;
     
     requestAnimationFrame(this.gameLoop.bind(this));
+  }
+  onResize() {
+    this.height = window.innerHeight;
+    this.width = window.innerWidth;
+
+    this.canvas.height = this.height;
+    this.canvas.width = this.width;
+    
   }
   gameLoop(time: number) {
     if (!this.lastTime) {
@@ -104,6 +117,7 @@ export default class Game {
     this.context.fillStyle = "#31beff";
     this.context.fillRect(0,0, this.width, this.height)
 
+    this.context.font = "18px Arial";
     
     
     this.tileManager.gameLoop(delta);
@@ -120,6 +134,7 @@ export default class Game {
         this.players[playerId].gameLoop(delta);
       }
     }
+    this.transitionManager.gameLoop(delta);
     
     this.hud.gameLoop(delta);
     this.tabMenu.gameLoop(delta);

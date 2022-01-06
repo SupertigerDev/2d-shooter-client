@@ -14,8 +14,6 @@ export default class Player {
   worldX: number;
   worldY: number;
 
-  screenX: number;
-  screenY: number;
 
   context: CanvasRenderingContext2D;
   angle: number;
@@ -53,8 +51,6 @@ export default class Player {
     this.worldX = worldX;
     this.worldY = worldY;
 
-    this.screenX = this.game.width / 2
-    this.screenY = this.game.height / 2
     
     this.dx = 0;
     this.dy = 0;
@@ -66,6 +62,12 @@ export default class Player {
     // last moving direction
     this.vertical = 0;
     this.horizontal = 0;
+  }
+  get screenX () {
+    return this.game.width / 2;
+  }
+  get screenY () {
+    return this.game.height / 2;
   }
 
   static HeroPick(hero: HeroNames) {

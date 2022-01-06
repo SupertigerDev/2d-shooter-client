@@ -22,13 +22,13 @@ export class HUD {
     const playerY = Math.round(player.worldY);
     const angle = Math.round((player.angle * (180/Math.PI)))
     
+    this.context.font = "18px Arial";
     const fullText = `FPS: ${fps} ` + `X: ${playerX} Y: ${playerY} ` + `Angle: ${angle}`;
     const textWidth = this.context.measureText(fullText).width;
 
     this.context.fillStyle = "rgba(0,0,0,0.5)";
     this.context.fillRect(0,0,textWidth + 10,25);
 
-    this.context.font = '18px serif';
     this.context.fillStyle = "white"
 
     this.context.fillText(fullText, 5,18);
