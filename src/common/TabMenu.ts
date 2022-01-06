@@ -47,10 +47,31 @@ export class TabMenu {
 
       this.context.fillStyle = "rgba(255,255,255,0.8)";
       this.context.fillText("Soldier", x + boxWidth - heroNameWidth - 10, y  + (40 / 2 + 5) + index * (boxHeight + 10));
-
+      
       
       this.context.fillStyle = "rgba(0,0,0,0.2)";
-      this.context.fillRect(x, y + index * (boxHeight + 10) + 40, boxWidth, (60) );
+      this.context.fillRect(x, y + index * (boxHeight + 10) + 40, boxWidth, (60));
+
+      const health = player.health.toString();
+      const healthWidth = this.context.measureText(health).width;
+
+      const kills = (0).toString();
+      const killsWidth = this.context.measureText(kills).width;
+
+      const deaths = (0).toString();
+      const deathsWidth = this.context.measureText(deaths).width;
+      
+      this.context.fillStyle = "rgba(255,255,255,0.8";
+      this.context.fillText("Health", x + 10, y + index * (boxHeight + 10) + 65);
+      this.context.fillText("Kills", x + 100, y + index * (boxHeight + 10) + 65);
+      this.context.fillText("Deaths", x + 180, y + index * (boxHeight + 10) + 65);
+
+      this.context.fillStyle = "white";
+      this.context.fillText(health, x + 10 + (50 / 2) - (healthWidth/2), y + index * (boxHeight + 10) + 87);
+      this.context.fillText(kills, x + 100 + (30/2) - (killsWidth/2), y + index * (boxHeight + 10) + 87);
+      this.context.fillText(deaths, x + 180 + (55/2) - (deathsWidth/2), y + index * (boxHeight + 10) + 87);
+
+
     }           
   }
   getTeams() {

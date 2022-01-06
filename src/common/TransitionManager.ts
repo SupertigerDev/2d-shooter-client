@@ -9,7 +9,7 @@ export class TransitionManager {
     this.game = game;
     this.hide = false;
 
-    this.speed = 0.05;
+    this.speed = 0.005;
 
     this.fadeOpacity = 0;
   }
@@ -28,10 +28,10 @@ export class TransitionManager {
 
   private update(delta: number) {
     if (this.hide && this.fadeOpacity !== 1) {
-      this.fadeOpacity+= this.speed / delta;
+      this.fadeOpacity+= this.speed * delta;
     }
     if (!this.hide && this.fadeOpacity !== 0) {
-      this.fadeOpacity-= this.speed / delta;
+      this.fadeOpacity-= this.speed * delta;
     }
   }
   private draw() {
