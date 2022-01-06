@@ -44,15 +44,17 @@ export class HUD {
     const healthBarWidth = 150;
     const healthBarHeight = 25;
     // draw health bar
-    this.context.fillStyle = "gray";
+    this.context.fillStyle = "rgba(255,255,255,0.4)";
     this.context.fillRect(15, this.game.height - healthBarHeight - 15, healthBarWidth, healthBarHeight)
     
-    this.context.fillStyle = "white";
+    this.context.fillStyle = player.isEnemy() ? this.game.enemyColor : this.game.friendlyColor;
     const healthRemainingWidth = health / maxHealth * healthBarWidth;
     this.context.fillRect(15, this.game.height - healthBarHeight - 15, healthRemainingWidth, 25)
     
     const displayHealth = `${health}/${maxHealth}`;
     const healthTextWidth = this.context.measureText(displayHealth).width;
+
+    this.context.fillStyle = "white";
     this.context.fillText(displayHealth, 15 + healthBarWidth - healthTextWidth, this.game.height - healthBarHeight - 20)
     this.context.fillText(name, 15, this.game.height - healthBarHeight - 20)
 

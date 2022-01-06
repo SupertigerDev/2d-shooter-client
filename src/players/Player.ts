@@ -222,17 +222,17 @@ export default class Player {
     healthBarScreenPos.screenY -= 50;
 
     // draw health bar
-    this.context.fillStyle = "gray";
+    this.context.fillStyle = "rgba(255,255,255,0.4)";
     this.context.fillRect(healthBarScreenPos.screenX, healthBarScreenPos.screenY, healthBarWidth, healthBarHeight)
     
-    this.context.fillStyle = this.isEnemy() ? "red" : "white";
+    this.context.fillStyle = this.isEnemy() ? this.game.enemyColor : this.game.friendlyColor;
     const healthRemainingWidth = health / maxHealth * healthBarWidth;
     this.context.fillRect(healthBarScreenPos.screenX, healthBarScreenPos.screenY, healthRemainingWidth, healthBarHeight)
     
 
     const nameTextWidth = this.context.measureText(name).width;
 
-
+    this.context.fillStyle = "white";
     this.context.fillText(name, healthBarScreenPos.screenX + (healthBarWidth /2) - (nameTextWidth / 2), healthBarScreenPos.screenY - 5)
 
   }

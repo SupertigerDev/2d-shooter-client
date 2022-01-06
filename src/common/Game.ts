@@ -39,7 +39,12 @@ export default class Game {
   username: string;
   killCam: KillCam;
   transitionManager: TransitionManager;
+  enemyColor: string;
+  friendlyColor: string;
   constructor(username: string) {
+
+    this.enemyColor = "red";
+    this.friendlyColor = "blue";
     this.username =   username;
 
     this.socketManager = new SocketManager(this);
@@ -81,19 +86,19 @@ export default class Game {
     this.players = {};
 
 
-    this.killCam = new KillCam(this);
-
+    
     
     this.tileManager = new TileManager(this);
     this.routeVisualizer = new RouteVisualizer(this);
     this.payload = new Payload(this);
-
+    
     this.transitionManager = new TransitionManager(this)
-
+    
     this.tabMenu = new TabMenu(this);
-
+    
     this.hud = new HUD(this);
     
+    this.killCam = new KillCam(this);
     
     this.lastTime = null;
     

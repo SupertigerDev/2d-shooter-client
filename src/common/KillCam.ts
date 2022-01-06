@@ -1,6 +1,7 @@
 import { HeroNames } from "../constants/HERO_NAMES";
 import Player from "../players/Player";
 import Game from "./Game";
+import { Payload } from "./Payload";
 
 
 export enum ReplayActionType {
@@ -45,6 +46,7 @@ export class KillCam {
   currentAction: number;
   followId: null | string;
   actionEnded: boolean;
+  payload: Payload;
   constructor(game: Game) {
     this.game = game;
     this.actions = null;
@@ -56,19 +58,26 @@ export class KillCam {
 
     this.followId = null;
     this.players = {};
+    this.payload = new Payload(this.game);
 
   }
-  loadActions(data: {startPositions: {players: PlayerData[]}, actions: Array<[ReplayActionType, ...any][]>}, followId: string) {
+  loadActions(data: {startPositions: {players: PlayerData[], payload: {x: number, y: number}}, actions: Array<[ReplayActionType, ...any][]>}, followId: string) {
     this.game.transitionManager.hideScreen();
 
     setTimeout(() => {
       this.actions = data.actions;
       const players = data.startPositions.players
       this.followId = followId;
+
+      this.payload.spawnPayload();
+      this.payload.x = data.startPositions.payload.x;
+      this.payload.y = data.startPositions.payload.y;
+
       for (let playerId in players) {
         const jsonPlayer = players[playerId];
         this.spawnPlayer(jsonPlayer)
       }
+
       this.game.transitionManager.showScreen();
     }, 500);
     
@@ -94,10 +103,12 @@ export class KillCam {
       this.actions = null;
       this.currentAction = 0;
       this.players = {};
+      this.payload = new Payload(this.game);
       this.lastTick = -1;
       this.followId = null;
       this.actionEnded = false;
       this.game.tileManager.cameraFollow(this.game.player);
+
 
       this.game.transitionManager.showScreen();
     }, 500);
@@ -105,6 +116,7 @@ export class KillCam {
   gameLoop(delta: number) {
     this.drawUI();
     this.update(delta);
+    this.payload.gameLoop(delta);
     
   }
   drawUI() {
@@ -179,6 +191,14 @@ export class KillCam {
       if (type === ReplayActionType.PLAYER_DAMAGED) {
         const player = this.players[data[0]];
         player.health = data[1]
+      }
+      if (type === ReplayActionType.PAYLOAD_MOVE_X) {
+        this.payload.x = data[0];
+        this.game.payload.angle = 0;
+      }
+      if (type === ReplayActionType.PAYLOAD_MOVE_Y) {
+        this.payload.y = data[0];
+        this.game.payload.angle = 90;
       }
     }
 
