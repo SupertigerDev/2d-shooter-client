@@ -43,8 +43,8 @@ export default class Game {
   friendlyColor: string;
   constructor(username: string) {
 
-    this.enemyColor = "red";
-    this.friendlyColor = "blue";
+    this.enemyColor = "#ff1f1f";
+    this.friendlyColor = "#1f5aff";
     this.username =   username;
 
     this.socketManager = new SocketManager(this);
