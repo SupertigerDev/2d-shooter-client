@@ -1,22 +1,42 @@
 import Game from "../common/Game";
+import { SpriteManager } from "../sprite/SpriteManager";
 import Player from "./Player";
 
 
 export default class SoldierPlayer extends Player {
   lastGunFired: number;
   gunFireRate: number;
+  spriteManager: SpriteManager;
   constructor(username: string, id: string,x: number, y: number, game: Game, self = false) {
     super(username, id, x, y, game, self);
     this.name = "Soldier"
 
     this.gunFireRate = 100;
     this.lastGunFired = -1;
+    this.spriteManager = new SpriteManager(this.game, "/players/soldier/playerSprite.png", 200, 200, 1.3);
+
+    setTimeout(() => {
+      console.log("loaded")
+      this.spriteManager.loadSprites([
+        // {x: 20,  y: 716, width: 24, height: 51},
+        {x: 84,  y: 716, width: 26, height: 51},
+        {x: 148, y: 717, width: 24, height: 51},
+        {x: 210, y: 717, width: 26, height: 51},
+        {x: 273, y: 716, width: 27, height: 51},
+        {x: 335, y: 716, width: 29, height: 51},
+        {x: 401, y: 716, width: 27, height: 51},
+        {x: 466, y: 716, width: 26, height: 51},
+        {x: 531, y: 716, width: 25, height: 51},
+
+      ])
+    }, 500);
   }
   emitFireGun() {
     this.game.socketManager.socket.emit("playerShoot");
   }
   gameLoop(delta: number) {
     super.gameLoop(delta);
+    this.spriteManager.gameLoop(delta);
     // this.drawBeam();
     if (!this.self) return;
     const leftMouseDown = this.game.mouse.lmb;
