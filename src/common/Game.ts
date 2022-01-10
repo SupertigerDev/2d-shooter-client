@@ -51,6 +51,10 @@ export default class Game {
 
     this.canvas = document.getElementById('canvas') as HTMLCanvasElement;
     this.context = this.canvas.getContext('2d')!;
+
+    // this.context.webkitImageSmoothingEnabled = false;
+    // this.context.mozImageSmoothingEnabled = false;
+    this.context.imageSmoothingEnabled = false;
     this.tileSize = 50
     this.latestHeroProperties = null;
 

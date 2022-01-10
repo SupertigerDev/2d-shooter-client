@@ -36,6 +36,7 @@ export class SpriteManager {
   }
   loadSprites(positions: Position[]) {
     if (!this.spriteSheet) return;
+    this.sprites = [];
     for (let index = 0; index < positions.length; index++) {
       const position = positions[index];
       this.sprites.push(new Sprite(this.spriteSheet, -(position.x * this.scale), -(position.y * this.scale), position.width * this.scale, position.height * this.scale))
@@ -72,6 +73,7 @@ function loadSpriteSheet(path: string, scale = 1): Promise<HTMLCanvasElement> {
       const context = canvas.getContext('2d')!;
       canvas.width = img.width * scale;
       canvas.height = img.height * scale;
+      context.imageSmoothingEnabled = false;
       context.drawImage(img, 0,0, canvas.width, canvas.height);
       resolve(canvas);
     };

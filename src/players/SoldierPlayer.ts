@@ -3,40 +3,77 @@ import { SpriteManager } from "../sprite/SpriteManager";
 import Player from "./Player";
 
 
+function loadSprite(column: number, row: number) {
+  return {x: 64 * row, y: 64 * column, width: 64, height: 64}
+}
+
+
+function loadSprites(index: number, length: number, skipFirst= false) {
+  let sprites: any = [];
+
+  for (let i = 0; i < length; i++) {
+    if (i === 0 && skipFirst) continue;
+    sprites.push(loadSprite(index, i))
+  }
+  return sprites;
+}
+
+const upIdle = loadSprite(8,0)
+const walkingUp = loadSprites(8,9,true);
+
+const downIdle = loadSprite(10,0)
+const walkingDown = loadSprites(10,9,true);
+
+const rightIdle = loadSprite(11,0)
+const walkingRight = loadSprites(11,9,true);
+
+const leftIdle = loadSprite(9,0)
+const walkingLeft = loadSprites(9,9,true);
+
+
 export default class SoldierPlayer extends Player {
   lastGunFired: number;
   gunFireRate: number;
-  spriteManager: SpriteManager;
   constructor(username: string, id: string,x: number, y: number, game: Game, self = false) {
     super(username, id, x, y, game, self);
     this.name = "Soldier"
 
     this.gunFireRate = 100;
     this.lastGunFired = -1;
-    this.spriteManager = new SpriteManager(this.game, "/players/soldier/playerSprite.png", 200, 200, 1.3);
+    this.spriteManager = new SpriteManager(this.game, "/players/soldier/playerSprite.png", 200, 200, 1);
 
     setTimeout(() => {
       console.log("loaded")
-      this.spriteManager.loadSprites([
-        // {x: 20,  y: 716, width: 24, height: 51},
-        {x: 84,  y: 716, width: 26, height: 51},
-        {x: 148, y: 717, width: 24, height: 51},
-        {x: 210, y: 717, width: 26, height: 51},
-        {x: 273, y: 716, width: 27, height: 51},
-        {x: 335, y: 716, width: 29, height: 51},
-        {x: 401, y: 716, width: 27, height: 51},
-        {x: 466, y: 716, width: 26, height: 51},
-        {x: 531, y: 716, width: 25, height: 51},
-
-      ])
+      this.spriteManager?.loadSprites([leftIdle])
     }, 500);
+  }
+  mouseDirectionChanged() {
+    super.mouseDirectionChanged()
+    if (!this.spriteManager) return;
+    switch (this.currentMouseDirection) {
+      case "left":
+        this.spriteManager.loadSprites([leftIdle])
+        break;
+      case "right":
+        this.spriteManager.loadSprites([rightIdle])
+        break;
+      case "up":
+        this.spriteManager.loadSprites([upIdle])
+        break;
+      
+      case "down":
+        this.spriteManager.loadSprites([downIdle])
+        break;
+      
+        default:
+          break;
+      }
   }
   emitFireGun() {
     this.game.socketManager.socket.emit("playerShoot");
   }
   gameLoop(delta: number) {
     super.gameLoop(delta);
-    this.spriteManager.gameLoop(delta);
     // this.drawBeam();
     if (!this.self) return;
     const leftMouseDown = this.game.mouse.lmb;

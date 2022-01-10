@@ -20,6 +20,8 @@ export class Sprite {
 
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d')!;
+    context.imageSmoothingEnabled = false;
+
     canvas.width = this.width;
     canvas.height = this.height;
     

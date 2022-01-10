@@ -2,6 +2,7 @@ import Game from "../common/Game";
 import { HeroNames } from "../constants/HERO_NAMES";
 import { Keyboard } from "../interfaces/Keyboard";
 import { Mouse } from "../interfaces/Mouse";
+import { SpriteManager } from "../sprite/SpriteManager";
 import SoldierPlayer from "./SoldierPlayer";
 
 
@@ -13,6 +14,7 @@ export default class Player {
 
   worldX: number;
   worldY: number;
+  spriteManager: undefined | SpriteManager;
 
 
   context: CanvasRenderingContext2D;
@@ -31,6 +33,7 @@ export default class Player {
   team: number;
   id: string;
   username: string;
+  currentMouseDirection: string;
 
   constructor(username: string, id: string, worldX: number, worldY: number, game: Game, self = false) {
     this.id = id;
@@ -58,6 +61,7 @@ export default class Player {
     this.keyboard = this.game.keyboard;
 
     this.angle = 0;
+    this.currentMouseDirection = "up"
     this.size = 50;
     // last moving direction
     this.vertical = 0;
@@ -91,7 +95,7 @@ export default class Player {
   }
   gameLoop(deltaTime: number) {
     if (!this.spawn) return;
-    this.draw();
+    this.draw(deltaTime);
     this.update(deltaTime);
   }
   private update(deltaTime: number) {
@@ -102,7 +106,8 @@ export default class Player {
     const oldAngle = this.angle;
     this.angle = Math.atan2((this.mouse.y) - this.screenY, this.mouse.x - this.screenX);
 
-    this.setDirection()
+    this.setMouseDirection() 
+    this.setKeyboardDirection()
     this.walk(deltaTime)
     this.handleCollisions();
     this.worldX += this.dx;
@@ -124,12 +129,26 @@ export default class Player {
 
 
   }
+  setMouseDirection() {
+    const degrees = this.angle * (180/Math.PI);
+    const before = this.currentMouseDirection;
+    if (degrees >= -140 && degrees <= -40) this.currentMouseDirection = "up"
+    else if (degrees >= -40 && degrees <= 40) this.currentMouseDirection = "right"
+    else if (degrees >= 40 && degrees <= 140) this.currentMouseDirection = "down"
+    else this.currentMouseDirection = "left"
+    if (before !== this.currentMouseDirection) {
+      this.mouseDirectionChanged()
+    }
+  }
+  mouseDirectionChanged() {
+
+  }
   walk(deltaTime: number) {
     this.dy = this.vertical * this.walkSpeed * deltaTime;
     this.dx = this.horizontal * this.walkSpeed* deltaTime;
 
   }
-  private setDirection() {
+  private setKeyboardDirection() {
     this.vertical = 0;
     this.horizontal = 0;
     if (this.keyboard?.w) {
@@ -167,7 +186,7 @@ export default class Player {
     }
 
   }
-  private draw() {
+  private draw(delta: number) {
     const followingPlayer = this.game.tileManager.follow;
     const {screenX, screenY} = this.game.tileManager.worldToScreen(
       this.worldX,
@@ -178,6 +197,13 @@ export default class Player {
       this.worldX - this.game.tileSize < followingPlayer.worldX + followingPlayer.screenX &&
       this.worldY + this.game.tileSize > followingPlayer.worldY - followingPlayer.screenY &&
       this.worldY - this.game.tileSize < followingPlayer.worldY + followingPlayer.screenY) {
+
+
+        if (this.spriteManager) {
+          this.spriteManager.x = screenX;
+          this.spriteManager.y = screenY;
+          this.spriteManager.gameLoop(delta)
+        }
         // Store the current context state (i.e. rotation, translation etc..)
         this.context.save()
     
