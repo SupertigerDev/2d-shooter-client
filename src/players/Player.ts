@@ -99,14 +99,14 @@ export default class Player {
     this.update(deltaTime);
   }
   private update(deltaTime: number) {
+    if (!this.spawn) return;
+    this.setMouseDirection() 
     if (!this.mouse) return;
     if (!this.self) return;
-    if (!this.spawn) return;
 
     const oldAngle = this.angle;
     this.angle = Math.atan2((this.mouse.y) - this.screenY, this.mouse.x - this.screenX);
 
-    this.setMouseDirection() 
     this.setKeyboardDirection()
     this.walk(deltaTime)
     this.handleCollisions();
@@ -203,21 +203,22 @@ export default class Player {
           this.spriteManager.x = screenX;
           this.spriteManager.y = screenY;
           this.spriteManager.gameLoop(delta)
+        } else {
+          // Store the current context state (i.e. rotation, translation etc..)
+          this.context.save()
+      
+          this.context.setTransform(1, 0, 0, 1, screenX, screenY)
+      
+          //Rotate the canvas around the origin
+          this.context.rotate(this.angle);
+          
+          this.context.fillStyle = "rgba(0,0,0,0.6)";
+          // this.context.fillStyle = "green";
+          this.context.fillRect(this.size / 2 * (-1), this.size / 2 * (-1), this.size, this.size);
+      
+          // Restore canvas state as saved from above
+          this.context.restore();
         }
-        // Store the current context state (i.e. rotation, translation etc..)
-        this.context.save()
-    
-        this.context.setTransform(1, 0, 0, 1, screenX, screenY)
-    
-        //Rotate the canvas around the origin
-        this.context.rotate(this.angle);
-        
-        this.context.fillStyle = "rgba(0,0,0,0.6)";
-        // this.context.fillStyle = "green";
-        this.context.fillRect(this.size / 2 * (-1), this.size / 2 * (-1), this.size, this.size);
-    
-        // Restore canvas state as saved from above
-        this.context.restore();
         this.drawPlayerInfo();
       }
   }

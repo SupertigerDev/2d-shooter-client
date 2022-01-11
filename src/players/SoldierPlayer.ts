@@ -45,7 +45,7 @@ export default class SoldierPlayer extends Player {
     setTimeout(() => {
       console.log("loaded")
       this.spriteManager?.loadSprites([leftIdle])
-    }, 500);
+    }, 100);
   }
   mouseDirectionChanged() {
     super.mouseDirectionChanged()
