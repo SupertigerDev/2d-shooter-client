@@ -98,7 +98,7 @@ export default class Player {
     this.draw(deltaTime);
     this.update(deltaTime);
   }
-  private update(deltaTime: number) {
+  update(deltaTime: number) {
     if (!this.spawn) return;
     this.setMouseDirection() 
     if (!this.mouse) return;
@@ -149,6 +149,8 @@ export default class Player {
 
   }
   private setKeyboardDirection() {
+    const verticalBefore = this.vertical;
+    const horizontalBefore = this.horizontal;
     this.vertical = 0;
     this.horizontal = 0;
     if (this.keyboard?.w) {
@@ -163,7 +165,13 @@ export default class Player {
     if (this.keyboard?.d) {
       this.horizontal = 1;
     }
+    if (verticalBefore !== this.vertical || horizontalBefore !== this.horizontal) {
+      if (this.vertical === 0 && this.horizontal === 0) this.onWalkStopped()
+      else this.onWalk();
+    }
   }
+  onWalk() {}
+  onWalkStopped(){}
 
   private handleCollisions() {
     const tileManager = this.game.tileManager;

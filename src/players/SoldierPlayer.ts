@@ -9,7 +9,7 @@ function loadSprite(column: number, row: number) {
 
 
 function loadSprites(index: number, length: number, skipFirst= false) {
-  let sprites: any = [];
+  let sprites: any[] = [];
 
   for (let i = 0; i < length; i++) {
     if (i === 0 && skipFirst) continue;
@@ -64,10 +64,51 @@ export default class SoldierPlayer extends Player {
       case "down":
         this.spriteManager.loadSprites([downIdle])
         break;
-      
         default:
           break;
+        }
+        if (this.horizontal === 1 || this.horizontal === -1 || this.vertical === 1 || this.vertical === -1) {
+          this.onWalk()
+        }
+  }
+  onWalkStopped(){
+      super.onWalkStopped()
+      this.mouseDirectionChanged();
+  }
+  onWalk() {
+    if(this.currentMouseDirection === "up") {
+      if (this.vertical === 1 || this.horizontal === 1) {
+        this.spriteManager?.loadSprites(walkingUp)
       }
+      if (this.vertical === -1 || this.horizontal === -1) {
+        this.spriteManager?.loadSprites([...walkingUp].reverse())
+      }
+    }
+    if(this.currentMouseDirection === "down") {
+      if (this.vertical === 1 || this.horizontal === 1) {
+        this.spriteManager?.loadSprites(walkingDown)
+      }
+      if (this.vertical === -1 || this.horizontal === -1) {
+        this.spriteManager?.loadSprites([...walkingDown].reverse())
+      }
+    }
+    if(this.currentMouseDirection === "left") {
+      if (this.vertical === 1 || this.horizontal === 1) {
+        this.spriteManager?.loadSprites(walkingLeft)
+      }
+      if (this.vertical === -1 || this.horizontal === -1) {
+        this.spriteManager?.loadSprites([...walkingLeft].reverse())
+      }
+    }
+    if(this.currentMouseDirection === "right") {
+      if (this.vertical === 1 || this.horizontal === 1) {
+        this.spriteManager?.loadSprites(walkingRight)
+      }
+      if (this.vertical === -1 || this.horizontal === -1) {
+        this.spriteManager?.loadSprites([...walkingRight].reverse())
+      }
+    }
+
   }
   emitFireGun() {
     this.game.socketManager.socket.emit("playerShoot");
@@ -75,6 +116,10 @@ export default class SoldierPlayer extends Player {
   gameLoop(delta: number) {
     super.gameLoop(delta);
     // this.drawBeam();
+  }
+  update(delta: number) {
+    super.update(delta);
+
     if (!this.self) return;
     const leftMouseDown = this.game.mouse.lmb;
     if (leftMouseDown) {
@@ -85,7 +130,6 @@ export default class SoldierPlayer extends Player {
       }
     }
   }
-
   
   drawBeam() {
     

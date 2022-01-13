@@ -36,6 +36,7 @@ export class SpriteManager {
   }
   loadSprites(positions: Position[]) {
     if (!this.spriteSheet) return;
+    this.currentSprite = 0;
     this.sprites = [];
     for (let index = 0; index < positions.length; index++) {
       const position = positions[index];
@@ -60,6 +61,7 @@ export class SpriteManager {
   }
   draw() {
     const sprite = this.sprites[this.currentSprite];
+    if (!sprite) return;
     this.game.context.drawImage(sprite.image, this.x - (sprite.width/2), this.y - (sprite.height/2));
   }
 }
